@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/user'
 
 // 创建axios实例
 const api: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:7700',
+  baseURL: '/api',  // 使用相对路径，让Vite代理处理
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'

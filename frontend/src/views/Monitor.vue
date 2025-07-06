@@ -73,7 +73,7 @@
     <el-card class="connection-list">
       <template #header>
         <span>连接列表</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="refreshConnections">
+        <el-button style="float: right; padding: 3px 0" link @click="refreshConnections">
           刷新
         </el-button>
       </template>
@@ -102,11 +102,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { getConnections, getSystemStatus, getRealTimeData, disconnectConnection } from '@/api/monitor'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 响应式数据
 const loading = ref(false)
-const connections = ref([])
+const connections = ref<any[]>([])
 
 // 连接统计
 const connectionStats = reactive({
@@ -129,39 +131,174 @@ const performanceStats = reactive({
   disk: 0
 })
 
+// 定时器
+let refreshTimer: number | null = null
+
 // 获取连接列表
 const fetchConnections = async () => {
   loading.value = true
   try {
-    // 这里应该调用后端API
-    connections.value = []
-    connectionStats.total = 0
-    connectionStats.active = 0
-    connectionStats.disconnected = 0
+    const response: any = await getConnections()
+    if (response.data) {
+      connections.value = response.data
+      // 更新连接统计
+      connectionStats.total = response.data.length
+      connectionStats.active = response.data.filter((conn: any) => conn.status === 'active').length
+      connectionStats.disconnected = response.data.filter((conn: any) => conn.status === 'disconnected').length
+    }
   } catch (error) {
     console.error('获取连接列表失败:', error)
+    ElMessage.error('获取连接列表失败')
   } finally {
     loading.value = false
   }
 }
 
+// 获取系统状态
+const fetchSystemStatus = async () => {
+  try {
+    const response: any = await getSystemStatus()
+    if (response.data) {
+      const data = response.data
+      performanceStats.cpu = data.cpu_usage || 0
+      performanceStats.memory = data.memory_usage || 0
+      performanceStats.disk = data.disk_usage || 0
+      
+      // 更新流量统计
+      trafficStats.received = Math.round((data.received_bytes || 0) / 1024) // 转换为KB
+      trafficStats.sent = Math.round((data.sent_bytes || 0) / 1024) // 转换为KB
+      trafficStats.packets = data.packets_count || 0
+      
+      // 更新连接统计
+      connectionStats.total = data.total_connections || 0
+      connectionStats.active = data.active_connections || 0
+      connectionStats.disconnected = data.disconnected_connections || 0
+    }
+  } catch (error) {
+    console.error('获取系统状态失败:', error)
+  }
+}
+
+// 获取实时数据
+const fetchRealTimeData = async () => {
+  try {
+    console.log('🔄 开始获取实时数据...')
+    const response: any = await getRealTimeData()
+    console.log('📡 API响应:', response)
+    
+    if (response.data) {
+      const data = response.data
+      console.log('📊 解析的数据:', data)
+      
+      // 更新连接统计
+      if (data.connection_stats) {
+        connectionStats.total = data.connection_stats.total_connections || 0
+        connectionStats.active = data.connection_stats.active_connections || 0
+        connectionStats.disconnected = data.connection_stats.disconnected_connections || 0
+        console.log('🔗 更新连接统计:', connectionStats)
+      }
+      
+      // 更新流量统计
+      if (data.traffic_stats) {
+        trafficStats.received = Math.round((data.traffic_stats.received_bytes || 0) / 1024)
+        trafficStats.sent = Math.round((data.traffic_stats.sent_bytes || 0) / 1024)
+        trafficStats.packets = data.traffic_stats.packets_count || 0
+        console.log('📡 更新流量统计:', trafficStats)
+      }
+      
+      // 更新性能统计
+      if (data.performance_stats) {
+        performanceStats.cpu = data.performance_stats.cpu_usage || 0
+        performanceStats.memory = data.performance_stats.memory_usage || 0
+        performanceStats.disk = data.performance_stats.disk_usage || 0
+        console.log('⚡ 更新性能统计:', performanceStats)
+      }
+      
+      // 更新连接列表
+      if (data.connections) {
+        connections.value = data.connections
+        console.log('📋 更新连接列表:', connections.value.length, '个连接')
+      }
+      
+      console.log('✅ 实时数据更新完成')
+    } else {
+      console.warn('⚠️ API响应数据结构异常:', response)
+    }
+  } catch (error) {
+    console.error('❌ 获取实时数据失败:', error)
+  }
+}
+
 // 刷新连接
 const refreshConnections = () => {
-  fetchConnections()
+  fetchRealTimeData()
 }
 
 // 查看详情
 const handleViewDetails = (row: any) => {
   console.log('查看详情:', row)
+  ElMessage.info(`查看终端 ${row.terminal_phone} 的详细信息`)
 }
 
 // 断开连接
-const handleDisconnect = (row: any) => {
-  console.log('断开连接:', row)
+const handleDisconnect = async (row: any) => {
+  try {
+    await ElMessageBox.confirm(
+      `确定要断开终端 ${row.terminal_phone} 的连接吗？`,
+      '确认断开',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    )
+    
+    const response: any = await disconnectConnection(row.id)
+    if (response.data?.code === 200) {
+      ElMessage.success('断开连接成功')
+      refreshConnections()
+    } else {
+      ElMessage.error('断开连接失败')
+    }
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error('断开连接失败:', error)
+      ElMessage.error('断开连接失败')
+    }
+  }
+}
+
+// 启动定时刷新
+const startAutoRefresh = () => {
+  refreshTimer = setInterval(() => {
+    fetchRealTimeData()
+  }, 5000) // 每5秒刷新一次
+}
+
+// 停止定时刷新
+const stopAutoRefresh = () => {
+  if (refreshTimer) {
+    clearInterval(refreshTimer)
+    refreshTimer = null
+  }
 }
 
 onMounted(() => {
-  fetchConnections()
+  console.log('🚀 监控页面初始化...')
+  console.log('📊 初始数据状态:')
+  console.log('  连接统计:', connectionStats)
+  console.log('  流量统计:', trafficStats)
+  console.log('  性能统计:', performanceStats)
+  
+  // 初始化时获取所有数据
+  fetchRealTimeData()
+  startAutoRefresh()
+  
+  console.log('✅ 监控页面初始化完成')
+})
+
+onUnmounted(() => {
+  stopAutoRefresh()
 })
 </script>
 

@@ -17,7 +17,7 @@ from api.models.user import (
 from api.services.auth_service import AuthService
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/auth", tags=["认证管理"])
+router = APIRouter(prefix="/auth", tags=["认证管理"])
 
 # HTTP Bearer认证
 security = HTTPBearer()

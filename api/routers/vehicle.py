@@ -16,7 +16,7 @@ from api.models.vehicle import (
 from api.services.vehicle_service import VehicleService
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/vehicles", tags=["车辆管理"])
+router = APIRouter(prefix="/vehicles", tags=["车辆管理"])
 
 # 依赖注入
 def get_vehicle_service():

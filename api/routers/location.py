@@ -15,7 +15,7 @@ from api.models.location import (
 from api.services.location_service import LocationService
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/locations", tags=["定位数据"])
+router = APIRouter(prefix="/locations", tags=["定位数据"])
 
 # 依赖注入
 def get_location_service():

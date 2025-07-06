@@ -17,7 +17,7 @@ from api.services.config_service import ConfigService
 from api.routers.auth import get_current_user
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/config", tags=["配置管理"])
+router = APIRouter(prefix="/config", tags=["配置管理"])
 
 # 依赖注入
 def get_config_service():

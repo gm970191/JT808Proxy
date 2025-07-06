@@ -40,12 +40,14 @@ from api.routers.vehicle import router as vehicle_router
 from api.routers.location import router as location_router
 from api.routers.auth import router as auth_router
 from api.routers.config import router as config_router
+from api.routers.monitor import router as monitor_router
 
 # 注册路由
 app.include_router(auth_router)
 app.include_router(config_router)
 app.include_router(vehicle_router)
 app.include_router(location_router)
+app.include_router(monitor_router)
 
 @app.on_event("startup")
 async def startup_event():
@@ -113,7 +115,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "api.main:app",
         host="0.0.0.0",
-        port=8000,
+        port=7700,
         reload=True,
         log_level="info"
     ) 
