@@ -8,7 +8,7 @@
 
 - **Web框架**: FastAPI
 - **数据验证**: Pydantic
-- **服务器**: Uvicorn
+- **服务器**: Uvicorn（端口：7700）
 - **测试**: pytest + TestClient
 
 ## 项目结构

@@ -6,7 +6,7 @@ import logging
 from typing import List, Optional, Dict, Any
 from datetime import datetime, date
 
-from api.models.location import (
+from ..models.location import (
     LocationData,
     LocationQuery,
     LocationResponse,
@@ -15,7 +15,7 @@ from api.models.location import (
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from JT808Proxy.storage.database import DatabaseManager
+from jt808proxy.storage.database import DatabaseManager
 
 logger = logging.getLogger(__name__)
 

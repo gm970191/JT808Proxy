@@ -82,17 +82,17 @@ api/
 
 **问题**: 遇到同名文件冲突 (`jt808proxy` vs `JT808Proxy`)
 **解决方案**:
-- 统一使用大写开头的目录名 `JT808Proxy`
-- 在导入时使用正确的路径：`from JT808Proxy.storage.database import DatabaseManager`
+- 统一使用小写的目录名 `jt808proxy`
+- 在导入时使用正确的路径：`from jt808proxy.storage.database import DatabaseManager`
 - 避免大小写混用的命名
 
 **最佳实践**:
 ```python
 # ✅ 正确
-from JT808Proxy.storage.database import DatabaseManager
+from jt808proxy.storage.database import DatabaseManager
 
 # ❌ 错误
-from jt808proxy.storage.database import DatabaseManager
+from JT808Proxy.storage.database import DatabaseManager
 ```
 
 ### 2. Python缓存管理
@@ -101,8 +101,8 @@ from jt808proxy.storage.database import DatabaseManager
 **解决方案**:
 ```powershell
 # 清理所有缓存
-Remove-Item -Recurse -Force JT808Proxy\**\__pycache__
-Remove-Item -Recurse -Force JT808Proxy\**\*.pyc
+Remove-Item -Recurse -Force jt808proxy\**\__pycache__
+Remove-Item -Recurse -Force jt808proxy\**\*.pyc
 
 # 重启Python解释器
 ```

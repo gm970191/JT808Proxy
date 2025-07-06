@@ -16,7 +16,7 @@ from api.models.vehicle import (
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from JT808Proxy.storage.database import DatabaseManager
+from jt808proxy.storage.database import DatabaseManager
 
 logger = logging.getLogger(__name__)
 

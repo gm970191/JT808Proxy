@@ -38,8 +38,12 @@ tcp_server = None
 # 导入路由
 from api.routers.vehicle import router as vehicle_router
 from api.routers.location import router as location_router
+from api.routers.auth import router as auth_router
+from api.routers.config import router as config_router
 
 # 注册路由
+app.include_router(auth_router)
+app.include_router(config_router)
 app.include_router(vehicle_router)
 app.include_router(location_router)
 
@@ -104,11 +108,12 @@ def set_tcp_server(server_instance):
     tcp_server = server_instance
     logger.info("TCP服务器实例已设置到API服务")
 
+# 如果直接运行此文件，启动开发服务器
 if __name__ == "__main__":
     uvicorn.run(
-        "main:app",
+        "api.main:app",
         host="0.0.0.0",
-        port=7900,
+        port=8000,
         reload=True,
         log_level="info"
     ) 

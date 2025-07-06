@@ -5,15 +5,13 @@
 import sys
 import os
 import asyncio
-import importlib.util
 from datetime import date, datetime
 
-# 动态加载模块
-database_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../jt808proxy/storage/database.py'))
-spec = importlib.util.spec_from_file_location("database", database_path)
-database = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(database)
-DatabaseManager = database.DatabaseManager
+# 添加项目根目录到Python路径
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# 直接导入
+from jt808proxy.storage.database import DatabaseManager
 
 def test_database():
     """测试数据库功能"""
@@ -85,7 +83,7 @@ def test_database():
         print(f"查询到 {len(location_records)} 条定位记录")
         
         for record in location_records:
-            print(f"定位记录: 时间={record['time']}, 位置=({record['latitude']}, {record['longitude']})")
+            print(f"定位记录: 时间={record['timestamp']}, 位置=({record['latitude']}, {record['longitude']})")
         
         print("\n数据库功能测试完成")
         

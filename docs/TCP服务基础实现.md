@@ -41,13 +41,13 @@
 
 ### 1. 启动服务器
 ```bash
-cd JT808Proxy
+cd jt808proxy
 python -m jt808proxy.core.tcp_server
 ```
 
 ### 2. 使用 telnet 测试
 ```bash
-telnet localhost 8080
+telnet localhost 16900
 ```
 
 ### 3. 使用 Python 客户端测试
@@ -55,7 +55,7 @@ telnet localhost 8080
 import socket
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('localhost', 8080))
+client.connect(('localhost', 16900))
 client.send(b'Hello JT808Proxy')
 response = client.recv(1024)
 print(f"收到响应: {response}")
