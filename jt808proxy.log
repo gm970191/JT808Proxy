@@ -1,0 +1,35 @@
+2025-07-06 08:39:27,266 - tcp_server - ERROR - TCP Server 启动失败: [Errno 10048] error while attempting to bind on address ('127.0.0.1', 16900): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+2025-07-06 08:40:39,615 - tcp_server - INFO - TCP Server 启动成功，监听地址: 127.0.0.1:16900
+2025-07-06 08:40:39,615 - tcp_server - INFO - 服务器启动时间: 2025-07-06 08:40:39.614762
+2025-07-06 08:40:39,829 - tcp_server - INFO - 客户端连接: 127.0.0.1:53631 (总连接数: 1, 活跃连接: 1)
+2025-07-06 08:40:40,343 - tcp_server - INFO - 客户端连接: 127.0.0.1:53634 (总连接数: 2, 活跃连接: 2)
+2025-07-06 08:40:40,897 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<TCPServer.start() done, defined at D:\Projects\JT808Proxy\test\../jt808proxy/core/tcp_server.py:87> exception=OSError(10048, "error while attempting to bind on address ('127.0.0.1', 16900): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。")>
+Traceback (most recent call last):
+  File "D:\Projects\JT808Proxy\test\../jt808proxy/core/tcp_server.py", line 90, in start
+    self.server = await asyncio.start_server(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Program Files\Python312\Lib\asyncio\streams.py", line 84, in start_server
+    return await loop.create_server(factory, host, port, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Program Files\Python312\Lib\asyncio\base_events.py", line 1572, in create_server
+    raise OSError(err.errno, msg) from None
+OSError: [Errno 10048] error while attempting to bind on address ('127.0.0.1', 16900): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+2025-07-06 08:41:15,747 - tcp_server - ERROR - TCP Server 启动失败: [Errno 10048] error while attempting to bind on address ('127.0.0.1', 16900): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+2025-07-06 08:48:15,857 - tcp_server - ERROR - TCP Server 启动失败: [Errno 10048] error while attempting to bind on address ('127.0.0.1', 16900): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+2025-07-06 08:48:40,228 - tcp_server - INFO - TCP Server 启动成功，监听地址: 127.0.0.1:16900
+2025-07-06 08:48:40,228 - tcp_server - INFO - 服务器启动时间: 2025-07-06 08:48:40.227191
+2025-07-06 08:48:40,653 - tcp_server - INFO - 客户端连接: 127.0.0.1:54734 (总连接数: 1, 活跃连接: 1)
+2025-07-06 08:48:40,653 - tcp_server - INFO - JT808协议头解析成功 - 终端手机号: 206461746120, 消息ID: 0x5465, 流水号: 26226
+2025-07-06 08:48:40,653 - tcp_server - INFO - 分包信息 - 总数: 28525, 序号: 8291
+2025-07-06 08:48:41,182 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-2' coro=<TCPServer.start() done, defined at D:\Projects\JT808Proxy\test\../jt808proxy/core/tcp_server.py:87> exception=OSError(10048, "error while attempting to bind on address ('127.0.0.1', 16900): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。")>
+Traceback (most recent call last):
+  File "D:\Projects\JT808Proxy\test\../jt808proxy/core/tcp_server.py", line 90, in start
+  File "D:\Program Files\Python312\Lib\asyncio\streams.py", line 84, in start_server
+    return await loop.create_server(factory, host, port, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Program Files\Python312\Lib\asyncio\base_events.py", line 1572, in create_server
+    raise OSError(err.errno, msg) from None
+OSError: [Errno 10048] error while attempting to bind on address ('127.0.0.1', 16900): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+2025-07-06 08:48:41,189 - tcp_server - INFO - 客户端断开连接: 127.0.0.1:54734 (断开原因: 客户端主动断开)

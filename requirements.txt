@@ -1,0 +1,36 @@
+# JT808Proxy 项目依赖
+
+# 异步网络编程
+asyncio
+
+# Web 框架
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# 数据库
+sqlite3
+
+# 日志
+logging
+
+# 数据处理
+dataclasses
+
+# 类型提示
+typing
+
+# 时间处理
+datetime
+
+# 系统监控
+psutil>=5.9.0
+
+# 其他可能需要的依赖
+pydantic>=2.5.0  # 数据验证
+# python-multipart  # 文件上传
+# python-jose[cryptography]  # JWT
+# passlib[bcrypt]  # 密码加密
+
+# 开发和测试
+pytest>=7.4.0
+pytest-asyncio>=0.21.0 
